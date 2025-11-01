@@ -1,0 +1,44 @@
+# Sensitive credentials - NEVER commit these
+tts-key.json
+*.json.backup
+
+# Environment files
+.env
+.env.local
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Generated content (videos, images, audio)
+backend/data/
+data/
+
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Docker volumes
+docker-compose.override.yml
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/

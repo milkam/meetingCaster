@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Cast Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Notification Cast Manager</h1>
+        </header>
+
+        <main>
+            <section class="form-section">
+                <h2>Schedule Notification</h2>
+                <form id="notificationForm">
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="4" required placeholder="Enter message to cast..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="device">Select Device:</label>
+                        <select id="device" name="device" required>
+                            <option value="">Loading devices...</option>
+                        </select>
+                        <button type="button" id="refreshDevices" class="btn-secondary">Refresh Devices</button>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startTime">Start Time:</label>
+                            <input type="datetime-local" id="startTime" name="startTime" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endTime">End Time:</label>
+                            <input type="datetime-local" id="endTime" name="endTime" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repeatCount">Audio Repeat Count:</label>
+                        <input type="number" id="repeatCount" name="repeatCount" min="1" max="100" value="3" required 
+                               placeholder="How many times to repeat the speech message">
+                        <small>Number of times to repeat "Michel is in the meeting until [time]"</small>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Schedule Notification</button>
+                </form>
+            </section>
+
+            <section class="notifications-section">
+                <h2>Scheduled Notifications</h2>
+                <div id="notificationsList" class="notifications-list">
+                    <p class="loading">Loading notifications...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

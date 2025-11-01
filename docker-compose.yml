@@ -1,0 +1,50 @@
+services:
+  backend:
+    container_name: notification-backend
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - notification_data:/data
+      - /etc/localtime:/etc/localtime:ro
+      - ./tts-key.json:/app/tts-key.json:ro
+    network_mode: host  # Use host network for mDNS multicast to work properly
+    environment:
+      - PORT=8081  # Use port 8081 directly on host
+      - DB_PATH=/data/notifications.db
+      - BACKEND_URL=http://192.168.1.3:8081
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/tts-key.json
+    labels:
+      - "traefik.enable=false"
+    # Note: With host network mode, backend runs directly on host network
+    # This is necessary for mDNS multicast to discover Chromecast devices
+
+  frontend:
+    container_name: notification-frontend
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    networks:
+      - traefik_proxy
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.notification.rule=Host(`notification.milkam.ca`)"
+      - "traefik.http.routers.notification.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.notification.middlewares=forwardAuth-authentik@file"
+      - "traefik.http.services.notification.loadbalancer.server.port=80"
+
+networks:
+  traefik_proxy:
+    external: true
+  internal:
+    driver: bridge
+
+volumes:
+  notification_data:
+    driver: local
+
